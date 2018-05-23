@@ -10,12 +10,13 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Team} = require('../server/db/models')
+const scrapeDriveStats = require('../utils/driveStats')
 
 async function seed () {
   await db.sync({force: true})
   console.log('db synced!')
-  // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
+  // Whoa! Because we `abbrwait` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
 
   const users = await Promise.all([
@@ -25,6 +26,44 @@ async function seed () {
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
   console.log(`seeded ${users.length} users`)
+
+  const teams = await Promise.all([
+    Team.create({abbr: 'ARI', name: 'Arizona Cardinals'}),
+    Team.create({abbr: 'ATL', name: 'Atlanta Falcons'}),
+    Team.create({abbr: 'BAL', name: 'Baltimore Ravens'}),
+    Team.create({abbr: 'BUF', name: 'Buffalo Bills'}),
+    Team.create({abbr: 'CAR', name: 'Carolina Panthers'}),
+    Team.create({abbr: 'CHI', name: 'Chicago Bears'}),
+    Team.create({abbr: 'CIN', name: 'Cincinati Bengals'}),
+    Team.create({abbr: 'CLE', name: 'Cleveland Browns'}),
+    Team.create({abbr: 'DAL', name: 'Dallas Cowboys'}),
+    Team.create({abbr: 'DEN', name: 'Denver Broncos'}),
+    Team.create({abbr: 'DET', name: 'Detroit Lions'}),
+    Team.create({abbr: 'GB', name: 'Green Bay Packers'}),
+    Team.create({abbr: 'HOU', name: 'Houston Texans'}),
+    Team.create({abbr: 'IND', name: 'Indianapolis Colts'}),
+    Team.create({abbr: 'JAC', name: 'Jacksonville Jaguars'}),
+    Team.create({abbr: 'KC', name: 'Kansas City Chiefs'}),
+    Team.create({abbr: 'LAC', name: 'Los Angeles Chargers'}),
+    Team.create({abbr: 'LAR', name: 'Los Angeles Rams'}),
+    Team.create({abbr: 'MIA', name: 'Miami Dolphins'}),
+    Team.create({abbr: 'MIN', name: 'Minnesota Vikings'}),
+    Team.create({abbr: 'NE', name: 'New England Patriots'}),
+    Team.create({abbr: 'NO', name: 'New Orleans Saints'}),
+    Team.create({abbr: 'NYG', name: 'New York Giants'}),
+    Team.create({abbr: 'NYJ', name: 'New York Jets'}),
+    Team.create({abbr: 'OAK', name: 'Oakland Raiders'}),
+    Team.create({abbr: 'PHI', name: 'Philadelphia Eagles'}),
+    Team.create({abbr: 'PIT', name: 'Pittsburg Steelers'}),
+    Team.create({abbr: 'SF', name: 'San Francisco 49ers'}),
+    Team.create({abbr: 'SEA', name: 'Seatle Seahwaks'}),
+    Team.create({abbr: 'TB', name: 'Tampa Bay Buccaneers'}),
+    Team.create({abbr: 'TEN', name: 'Tennessee Titans'}),
+    Team.create({abbr: 'WAS', name: 'Washington Redskins'}),
+  ])
+  console.log(`seeded ${teams.length} teams`)
+
+  await scrapeDriveStats()
   console.log(`seeded successfully`)
 }
 
